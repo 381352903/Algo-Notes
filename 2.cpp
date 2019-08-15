@@ -1,0 +1,166 @@
+struct MyHashSetNode {
+	int		val;
+	MyHashSetNode * left, *right;
+
+	MyHashSetNode(int v) : val(v), left(nullptr), right(nullptr)
+	{
+	}
+	~MyHashSetNode()
+	{
+		if (left != nullptr) delete left;
+		if (right != nullptr) delete right;
+	}
+};
+
+class MyHashSetTree {
+private:
+MyHashSetNode *root;
+public:
+MyHashSetTree() : root(nullptr)
+{
+}
+~MyHashSetTree()
+{
+	if (root != nullptr)
+		delete root;
+}
+
+MyHashSetNode *Insert(int x, MyHashSetNode *parent)
+{
+	MyHashSetNode *result = parent;
+
+	if (result == nullptr)
+		result = new MyHashSetNode(x);
+	else if (result->val < x)
+		root->right = Insert(x, parent->right);
+	else if (result->val > x)
+		root->left = Insert(x, parent->left);
+	else
+		return nullptr;
+	return result;
+}
+
+bool Insert(int x)
+{
+	if (Find(x) != nullptr)
+		return false;
+	root = Insert(x, root);
+	return true;
+}
+
+MyHashSetNode *Find(int x, MyHashSetNode *parent)
+{
+	MyHashSetNode *current = parent;
+	int currentval;
+
+	while (current) {
+		currentval = current->val;
+		if (currentval == x)
+			return current;
+		else if (currentval < x)
+			current = Find(x, parent->right);
+		else if (currentval > x)
+			current = Find(x, parent->left);
+	}
+	return nullptr;
+}
+
+MyHashSetNode *Find(int x)
+{
+	if (root != nullptr)
+		return Find(x, root);
+	return nullptr;
+}
+MyHashSetNode *FindMin(MyHashSetNode *parent)
+{
+	MyHashSetNode *current = parent;
+	MyHashSetNode *left = nullptr;
+
+	if (current != nullptr)
+		while ((left = current->left) != nullptr)
+			current = left;
+	return current;
+}
+
+MyHashSetNode *RemoveMin(MyHashSetNode *parent)
+{
+	if (parent == nullptr) {
+		return nullptr;
+	} else if (parent->left != nullptr) {
+		parent->left = RemoveMin(parent->left);
+		return parent;
+	} else {
+		MyHashSetNode *result = parent->right;
+		parent->right = parent->left = nullptr;
+		delete parent;
+		return result;
+	}
+}
+
+MyHashSetNode *Remove(int x, MyHashSetNode *parent)
+{
+	MyHashSetNode *current = parent;
+	MyHashSetNode *left = nullptr;
+	MyHashSetNode *right = nullptr;
+	int currentValue;
+
+	if (parent != nullptr) {
+		left = parent->left;
+		right = parent->right;
+		currentValue = parent->val;
+	}
+
+	if (current == nullptr) {
+		return current;
+	} else if (x < currentValue) {
+		current->left = Remove(x, parent->left);
+	} else if (x > currentValue) {
+		current->right = Remove(x, parent->right);
+	} else if (left != nullptr && right != nullptr) {
+		current->val = FindMin(right)->val;
+		current->right = RemoveMin(right);
+	} else {
+		current = (left == nullptr) ? right : left;
+		parent->right = parent->left = nullptr;
+		delete parent;
+	}
+	return current;
+}
+
+bool Remove(int x)
+{
+	if (Find(x) == nullptr)
+		return false;
+	root = Remove(x, root);
+	return true;
+}
+};
+
+
+
+
+class MyHashSet {
+private:
+MyHashSetTree tree;
+public:
+
+MyHashSet()
+{
+}
+
+void add(int key)
+{
+	tree.Insert(key);
+}
+
+void remove(int key)
+{
+	tree.Remove(key);
+}
+
+
+bool contains(int key)
+{
+	return tree.Find(key) != nullptr;
+}
+};
