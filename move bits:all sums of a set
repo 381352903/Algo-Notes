@@ -8,7 +8,7 @@ public:
         bitset<10001> bits(1);
         int sum = accumulate(nums.begin(), nums.end(), 0);
         for (auto n : nums) bits |= bits << n;
-        return !(sum & 1) && bits[sum >> 1];
+        return !(sum & 1) && bits[sum >> 1];//sum is divided by 2 and sum should be an even number
     }
 };
 
