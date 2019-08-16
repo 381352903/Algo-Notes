@@ -22,3 +22,4 @@ A tiny example, nums=[2, 3, 5], initial bits is 1, traversing through nums
 when num=2, bits=101, which represents nums can sum to 0 and 2
 when num=3, bits=101101, which represents nums can sum to 0, 2, 3, 5
 when num=5, bits=10110101101, which represents nums can sum to 0, 2, 3, 5, 7, 8, 10
+Finally, we just need to check if bits[5] is 0 or 1
