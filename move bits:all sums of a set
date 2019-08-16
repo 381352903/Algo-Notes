@@ -12,6 +12,11 @@ public:
     }
 };
 
+dp[j] represents whether a specific sum value j can be gotten from (a subset of) nums or not. The basic idea is, if dp[j] is achievable, then dp[i+num] is achievable if we pick up the number num, and dp[i] is also achievable if we don't. I learnt this idea from https://discuss.leetcode.com/topic/76264/short-java-dp-solution-with-explanation
+
+Let's get back to the solution with bitset. It replaces the dp table with a bitset, a bit bits[j] has the same meaning as dp[j].
+
+With the advantage of bitset, the inner loop of traversing dp, condition check of dp[j] and operations on next_dp are all transformed to bitwise shift operation, which is much more efficient.
 A tiny example, nums=[2, 3, 5], initial bits is 1, traversing through nums
 
 when num=2, bits=101, which represents nums can sum to 0 and 2
