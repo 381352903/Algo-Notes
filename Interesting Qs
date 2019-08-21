@@ -2,3 +2,7 @@ Q133(Graph BFS/DFS). An undirected graph to travese
 aim : deep copy the graph
 There are two ways : BFS and DFS. 
 using a map to avoid copy one node multiple times.
+
+Q single number I,II,III
+ using XOR to get the single number in a list
+ key : A OXR A == 0
