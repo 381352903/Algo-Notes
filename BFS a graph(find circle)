@@ -1,0 +1,38 @@
+using two-dimention vector to store the data
+and there's a vector called indegree to calculate the indegrees of each Node
+if there are nodes with 0 indegree, push them into queue
+decrease the indegree of its' neighbors
+do it N times
+
+int num_Nodes=2;
+vector<vector<int>> initial={{1,0},{0,1}}; //circle
+vector<vector<int>> graph;
+vector<int> indegree;
+
+vector<int> route;//write down the path you trave all nodes
+
+queue<int> todo;
+
+for(auto c:initial){
+  graph[initial[1]].emplace_back(initial[0]);
+  indegree[initial[0]]++;
+}
+for(int i=0;i<num_Nodes;++i)
+  if(indegree[i]==0)
+    {
+      todo.push(i);
+      route.emplace_back(i);
+      }
+while(!q.empty()){
+  int x=q.top();
+  num_Nodes--;
+  q.pop();
+  for(auto c:graph[x]){
+      if(--indegree(c)==0){
+        q.push(c);
+        route.emplace_back(c);
+        }
+    }
+  }
+  if(num_Nodes==0) there's no circle
+  
