@@ -1,0 +1,74 @@
+问题：
+
+Given an array of integers and an integer k, you need to find the total number of continuous subarrays whose sum equals to k.
+
+Example 1:
+
+Input:nums = [1,1,1], k = 2
+Output: 2
+Note:
+
+The length of the array is in range [1, 20,000].
+The range of numbers in the array is [-1000, 1000] and the range of the integer k is [-1e7, 1e7].
+解决：
+
+①  累加数组。
+
+class Solution {//280ms
+    public int subarraySum(int[] nums, int k) {
+        int res = 0;
+        for (int i = 1;i < nums.length;i ++){
+            nums[i] += nums[i - 1];
+        }
+        for (int i = 0;i < nums.length;i ++){
+            if (nums[i] == k) res ++;
+            for (int j = i - 1;j >= 0;j --){
+                if (nums[i] - nums[j] == k) res ++;
+            }
+        }
+        return res;
+    }
+}
+
+② 用一个哈希表来建立连续子数组之和跟其出现次数之间的映射，初始化要加入{0,1}这对映射，这是为啥呢，因为我们的解题思路是遍历数组中的数字，用sum来记录到当前位置的累加和，我们建立哈希表的目的是为了让我们可以快速的查找sum-k是否存在，即是否有连续子数组的和为sum-k，如果存在的话，那么和为k的子数组一定也存在，这样当sum刚好为k的时候，那么数组从起始到当前位置的这段子数组的和就是k，满足题意，如果哈希表中实现没有m[0]项的话，这个符合题意的结果就无法累加到结果res中，这就是初始化的用途。
+
+class Solution { //55ms
+    public int subarraySum(int[] nums, int k) {
+        int res = 0;
+        int sum = 0;
+        Map<Integer,Integer> preSum = new HashMap<>();
+        preSum.put(0,1);
+        for (int i = 0;i < nums.length;i ++){
+            sum += nums[i];
+            if (preSum.containsKey(sum - k)){
+                res += preSum.get(sum - k);
+            }
+            preSum.put(sum,preSum.getOrDefault(sum,0) + 1);
+        }
+        return res;
+    }
+}
+
+③ 整合上面两种解法：
+
+class Solution { //42ms
+    public int subarraySum(int[] nums, int k) {
+        if(nums == null || nums.length == 0) return 0;
+        int len = nums.length;
+        for(int i = 1; i < len; i ++){
+            nums[i] += nums[i - 1];
+        }
+        Map<Integer, Integer> map = new HashMap<>();
+        map.put(0, 1);
+        int res = 0;
+        for(int i = 0; i < len; i++){
+            if(map.containsKey(nums[i] - k)){
+                res += map.get(nums[i] - k);
+            }
+            map.put(nums[i], map.getOrDefault(nums[i], 0) + 1);
+        }
+        return res;
+    }
+}
+
+转载于:https://my.oschina.net/liyurong/blog/1605053
