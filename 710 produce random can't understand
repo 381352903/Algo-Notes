@@ -1,0 +1,40 @@
+710
+class Solution 
+{
+    vector<int> bl;
+    std::default_random_engine generator;
+    std::uniform_int_distribution<int> distribution;
+public:
+    Solution(int N, vector<int> blacklist)
+    {
+        swap(bl, blacklist);
+        sort(bl.begin(), bl.end());
+        for (int i = 0, e = bl.size(); i < e; ++i)
+            bl[i] -= i;
+        
+        distribution = std::uniform_int_distribution<int>(0, N - 1 - bl.size());
+    }
+    
+    int pick() {
+        auto r = distribution(generator);
+        return r + (upper_bound(bl.begin(), bl.end(), r) - bl.begin());
+    }
+};
+
+cc @yren2 , let me try to explain the idea.
+Let's say sorted array M is the all valid numbers, and X is the actual generated random number. Duo to blacklist, it's index in M may be less. e.g.,
+N = 7, B = [1, 4, 6], then M = [0, 2, 3, 5]. if X == 2, its index is 1 duo to 1 is black listed; if X is 5, its index is 3, duo to both 1 and 4 are black listed. However if X is 0, its index is still 0 has no blacklist number. Here, we know, the difference = X - its index == how many blacklist number <= X.
+Now, use bl[i] to represent the index where it's reduced by i. After generate a random number as the index, add the difference back (using binary search, get the index in bl[] where first greater than the generated number), it's the actual answer.
+Hope it helps.
+
+
+Thank you so much for the detailed explanation!
+I think I finally understand it. :D
+Let's call the original domain in [1..N) and reduced domain in [1..M) where M=N-|B|.
+We need to return X in the original domain, but can only generate a number r in the reduced domain.
+The mapping from the original domain to the reduced domain is the relation:
+"X - {number of elements smaller than X in B} = r" // from original domain to the reduced domain
+
+The line of bl[i]-=i is to map the (impossible) X into the reduced domain.
+So, one can find how many elements smaller than r quickly. (upper_bound()-begin()), since both r and bl[i] now in the same domain.
+Then, map r back to the original domain, by r + {skipped elements in B}.
