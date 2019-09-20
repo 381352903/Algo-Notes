@@ -1,0 +1,184 @@
+动态规划的一般思路是分为四步，即：寻找最有子结构、递归定义最有子结构，自底向上求解最有子结构和构造最优解。其中，在第三步时，我们也可以自顶向下进行求解，但此时需要对解需要进行记录。
+
+一、LCS ：求两个序列的最长公共子序。
+
+1、寻找最优子结构
+
+假设待求解的两个序列为Xn和Ym，我们用L{Xn，Ym}表示最长公共子序。我们知道，如果我们已经知道了L{Xn-1，Ym-1}的最长公共子序，则L{Xn，Ym}=L{Xn-1，Ym-1}+1或者L{Xn，Yn}=max{L{Xn-1，Ym},L{Xn，Ym-1}}。也就是说，最长公共子序和其子问题有关。
+
+2、递归定义最优子结构
+
+最有子结构的顶一下如下：
+
+
+3、自底向上求解最优解，代码如下：
+
+点击(此处)折叠或打开
+
+def longest_common_subsequence(lhs,rhs):
+    l_len = len(lhs);
+    r_len = len(rhs);
+    matrix = zeros((l_len,r_len));
+    for i in arange(l_len):
+        for j in arange(r_len):
+            if lhs[i] == rhs[j]:
+                if i != 0 and j != 0:
+                    matrix[i][j] = matrix[i-1][j-1]+1;
+                else:
+                    matrix[i][j] = 1;
+            elif i != 0 and j != 0:
+                    matrix[i][j] = max(matrix[i-1][j],matrix[i][j-1]);
+    return matrix;
+4、构造最优解，如下：
+
+点击(此处)折叠或打开
+
+def print_longest_common_subsequence(lhs,rhs):
+    matrix = longest_common_subsequence(lhs,rhs);
+    l_len = len(lhs);
+    r_len = len(rhs);
+    i = l_len-1;j=r_len-1;
+    rst = [];
+    while j>0 and i >0:
+        if matrix[i-1][j] != matrix[i][j] and matrix[i][j-1] != matrix[i][j]:
+            rst. insert(0,lhs[i]);
+            #print(i,j);
+            j = j-1;
+            i = i-1;
+        elif matrix[i-1][j] == matrix[i][j]:
+            i = i-1;
+        else:
+            j=j-1;
+    if j!=0 and i== 0:
+        if matrix[i][j-1] != matrix[i][j]:
+            rst. insert(0,lhs[i]);
+    elif j==0 and 0:
+        if matrix[i][j] != matrix[i-1][j]:
+            rst. insert(0,lhs[j]);
+    return rst;
+二、LIS：求序列的最长递增子序。
+
+1、寻找最优子结构
+
+我们设待求的序列为Xn,同样的如果我们已经求得了前n-1个序列的最长递增子序列，那么Xn的最长递增子序列要么等于前n-1个的最长递增子序，要么等于其加1。这里的问题有些复杂，复杂的原因就在于，前n-1个序列的最长递增子序，可能不止一个，设其长度为Ln-1。面对这种情况，我们只需用Xn的最后的元素与递增序列长度为Ln-1的最长序列的最小值进行比较。
+
+2、递归定义最优解结构
+
+我们递归定义最优接结构，如下：
+
+
+
+因为序列的每一项，都可以构成长度为1的递增自序列，所以最小值为1.
+
+3、自底向上求解最优解（与算法导论上的方法一样，只是没加记录项），代码如下：
+
+
+点击(此处)折叠或打开
+
+def longest_increasing_subsequence(tmp_str):
+    tmp_len = len(tmp_str);
+    LIS = [1 for i in range(tmp_len)];
+    for i in range(tmp_len):
+        j=0;
+        while j <= i:
+            if (tmp_str[i] > tmp_str[j]) and (LIS[i] < LIS[j]+1):
+                LIS[i] = LIS[j]+1;
+            j = j+1;
+    return max(LIS);
+注意：这个简单实现，其复杂度为O(n2),我们对其进行改进，使其时间复杂度为 O(nlog(n))，如下：
+
+点击(此处)折叠或打开
+
+def binary_search(tmp_str,begin,end,key):
+    if begin == end:
+        return begin;
+    middle = (begin+end)/2;
+    if tmp_str[middle]==key:
+        return middle;
+    elif tmp_str[middle]>key:
+        return binary_search(tmp_str,begin,middle,key);
+    else:
+        return binary_search(tmp_str,middle+1,end,key);
+def improved_LIS(tmp_str):
+    tmp_len = len(tmp_str);
+    LIS = [1 for i in range(tmp_len)];
+    MaxV = [0 for i in range(tmp_len)];
+    nMaxLIS = 0;
+    for i in range(tmp_len):
+        j = binary_search(MaxV,0,nMaxLIS,tmp_str[i]);
+        if tmp_str[i] > MaxV[j]:
+            LIS[i] = j+1;
+        elif j>1:
+            LIS[i] = j;
+        if LIS[i] > nMaxLIS:
+            nMaxLIS = LIS[i];
+            MaxV[LIS[i]]=tmp_str[i];
+        elif tmp_str[i] > MaxV[j] and tmp_str[i] < MaxV[j+1]:
+            MaxV[j+1] = tmp_str[i];
+    return max(LIS),LIS;
+4、构造最优解，如下：
+
+点击(此处)折叠或打开
+
+def print_longest_increasing_subsequence(tmp_str):
+    nMax,tmp_list = improved_LIS(tmp_str);
+    mIndex = index = tmp_list.index(nMax);
+    rst = [0 for i in range(nMax)];
+    rst[0] = tmp_str[mIndex];
+    j = 1;
+    for i in range(mIndex):
+        if tmp_list[mIndex-i] == nMax-1 and \
+           tmp_str[mIndex-i]<tmp_str[index]:
+            index = mIndex-i;
+            rst[j] = tmp_str[index];
+            j=j+1;
+            nMax = nMax-1;
+            if nMax == 1:
+                return rst;
+    return rst;
+三、CSD：编辑距离
+
+1、寻找最优子结构
+
+设两个序列为：Xn和Ym，编辑距离为：L{Xn，Ym}，为了简单起见，我们假设每个操作的代价都是相同的。在进行操作的第一步时，我们可以进行如下操作，即：
+
+1）删除Xn的一个字符，此时需要求解的是L{Xn-1，Ym}；
+
+2）删除Ym的一个字符时需要求解的是L{Xn，Ym-1}；
+
+3）在Xn前面添加一个和Ym第一个相同的字符，此时需要求解的是L{Xn，Ym-1}；
+
+4）在Ym前面添加一个和Xn第一个相同的字符，此时需要求解的是L{Xn-1，Ym}；
+
+5）修改Xn的第一个字符为Ym的第一个字符，此时需要求解的是Ln{Xn-1，Ym-1}；
+
+6）修改Ym的第一个字符为Xn的第一个字符，此时需要求解的是Ln{Xn-1，Ym-1}；
+
+从上面的分析中，我们可以看到，第一步之后只会存在三种情况，即：L{Xn，Ym-1}、L{Xn-1，Ym}和L{Xn-1，Ym-1}
+
+2、递归定义最优解结构
+
+
+
+3、我们这次不再用自顶向上的求解法，而是采用带备忘录的解法，如下：
+
+
+点击(此处)折叠或打开
+
+def longest_common_subsequence(lhs,rhs):
+    l_len = len(lhs);
+    r_len = len(rhs);
+    matrix = zeros((l_len,r_len));
+    for i in arange(l_len):
+        for j in arange(r_len):
+            if lhs[i] == rhs[j]:
+                if i != 0 and j != 0:
+                    matrix[i][j] = matrix[i-1][j-1]+1;
+                else:
+                    matrix[i][j] = 1;
+            elif i != 0 and j != 0:
+                    matrix[i][j] = max(matrix[i-1][j],matrix[i][j-1]);
+    return matrix;
+
+通过寻找最优子结构我们知道，有些操作会得到相同结果，所以具体的求出怎么操作的比较困难，如果每个操作所花费的代价不同的话，求解具体的操作会容易些。
+本文出自：http://blog.chinaunix.net/uid-28311809-id-4251024.html
