@@ -1,0 +1,33 @@
+
+class People {
+public:
+	People(string name, int age) :m_name(name), m_age(age) {}
+	virtual void display(){  // virtual 基类指针调用子类函数成为可能
+		cout << "people" << m_name << m_age << endl;
+	}
+protected:
+	string m_name;
+	int m_age;
+};
+
+class Teacher :public People {
+private:
+	int m_salaty;
+public:
+	Teacher(string name, int age, int salary) :People(name, age), m_salaty(salary) {}
+	void display() {
+		cout << "Teacher" << m_name << m_age << m_salaty << endl;
+	}
+};
+
+
+int main()
+{
+	
+	People *p = new Teacher("abc", 21, 1000);
+	p->display();
+
+	system("pause");
+	
+	return 0;
+}
