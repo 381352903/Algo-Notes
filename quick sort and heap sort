@@ -1,0 +1,96 @@
+1.quick sort
+void QuickSort(int *arr, int l, int r)
+{
+    int len = r;        // 存储当前数组的最后一个元素的坐标
+    int num = arr[l];   // 用来存放枢轴元素
+    bool dir = 0;       // 用来表示移动方向
+
+    /*一趟快速排序*/
+    while (l != r)
+    {
+        if (dir == 0)
+        {
+            if (arr[r] < num)
+            {
+                arr[l] = arr[r];
+                dir = 1;
+            }
+            else
+            {
+                r--;
+            }
+        }
+        else
+        {
+            if (arr[l] > num)
+            {
+                arr[r] = arr[l];
+                dir = 0;
+            }
+            else
+            {
+                l++;
+            }
+        }
+    }
+    arr[l] = num;               // 将枢轴元素放入最终位置
+    if (l > 1)
+    {
+        QuickSort(arr, 0, l - 1);
+    }
+    if (len - l - 1 > 1)
+    {
+        QuickSort(arr, l + 1, len);
+    }
+}
+
+int main()
+{
+    int arr[] = { 49, 38, 65, 97, 76, 13, 27, 49 };
+    int len = 8;
+    QuickSort(arr, 0, len - 1);
+
+    for (int i = 0; i < len; i++)
+    {
+        std::cout << arr[i] << " ";
+    }
+    std::cout << std::endl;
+    system("pause");
+    return 0;
+}
+2.heap sort
+void shift(int a[], int low, int high){
+    //对数组中处于low位的结点进行一次向下调整
+    int temp = a[low];
+    int i = low, j = 2*i; //i为待调整结点，j为i的子结点，
+    while(j <= high){
+        //若i没有子结点则跳出循环
+        if(a[j] < a[j+1]) //跟子结点中较大的比较
+            j++;
+        if(a[j] > temp){ //大顶堆子结点较大就跟双亲结点换位
+            a[i] = a[j];
+            i = j;
+            j = 2 * i;
+        }
+        else
+            break;
+    }
+    a[i] = temp;
+}
+void heapSort(int a[], int n){
+    //数组下标从1开始
+    int i;
+    int temp;
+    for (i = n/2; i >= 1; --i) //建堆，从第一个非页结点即n/2开始逐步往前调整
+    {
+        shift(a, i, n);
+    }
+    
+    for (i = n; i >= 2; ++i)//调整的第二个结点就行了，后面n-1个结点有序，且较大
+    {
+        tmep = a[1];//每次调整后将第一个最大的跟尾结点换位，则每一轮都是最大的在末尾
+        a[1] = a[i];
+        a[i] = temp;
+        shift(a, 1, n-1);
+    }
+}
