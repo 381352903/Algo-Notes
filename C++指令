@@ -1,0 +1,18 @@
+ival = static_cast< int >( 3.541 ) + 3; 强制类型转换
+
+catch()
+throw(string err)
+assert(expression);
+
+multimap
+智能指针
+shared_ptr<string> p1=make_shared<string>("abcd");//指向字符串的指针
+unique_ptr<int> p3=make_unique<int>(3);
+shared_ptr<list<int>> p2;
+shared_ptr<int> p2(new int(1024));//正确：使用了直接初始化形式
+p.reset(new int(1024));//正确。p指向一个新对象
+//将所有权从p1（指向string Stegosaurus）转移给p2
+unique_ptr<string> p2(p1.release());//release将p1置为空
+unique_ptr<string>p3(new string("Trex"));
+//将所有权从p3转移到p2
+p2.reset(p3.release());//reset释放了p2原来指向的内存
