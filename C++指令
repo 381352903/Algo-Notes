@@ -16,3 +16,17 @@ unique_ptr<string> p2(p1.release());//release将p1置为空
 unique_ptr<string>p3(new string("Trex"));
 //将所有权从p3转移到p2
 p2.reset(p3.release());//reset释放了p2原来指向的内存
+
+
+override 关键字，可以避免派生类中忘记重写虚函数的错误
+
+类之间的关系：
+纵向：继承、实现
+横向：依赖 < 关联 < 聚合 < 组合（强弱关系）
+
+省略号挂起类型检查机制 它们的出现告知编译器 当函数被调用时 可以有 0 个或多 个实参 而实参的类型未知 省略号有下列两种形式 
+void foo( parm_list, ... ); void foo( ... ); 
+
+ inline 函数必须在调用该函数的每个文本文件中定义，方法建议把 inline 函数的定义放到头文件中 在每个调用该 inline 函数的文件中包含该头文件 
+ 
+ int (*pf)( const string &, const string & ); // ok: 正确 指向函数的指针
