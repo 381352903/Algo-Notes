@@ -30,3 +30,43 @@ void foo( parm_list, ... ); void foo( ... );
  inline 函数必须在调用该函数的每个文本文件中定义，方法建议把 inline 函数的定义放到头文件中 在每个调用该 inline 函数的文件中包含该头文件 
  
  int (*pf)( const string &, const string & ); // ok: 正确 指向函数的指针
+ 
+  寄存器自动对象     在函数中频繁被使用的自动变量可以用 register 声明 
+  for ( register int ix = 0; ix < sz; ++ix ) // ... 
+   auto_ptr 对象被初始化为指向由 new 表达式创建的动态分配对象 当 auto_ptr 对象的生 命期结束时 动态分配的对象被自动释放 
+   #include <memory> 
+   
+   定位 new 表达式 
+   // 预分配内存 但没有Foo对象 
+   char *buf = new char[ sizeof(Foo) * chunk ];
+   // 在buf中创建一个Foo对象  
+   Foo *pb = new (buf) Foo;
+   
+   嵌套名字空间cplusplus_primer::MatrixLib::matrix 
+   可以用未命名的名字空间 unnamed namespace 声明一个局部于某一文 件的实体
+   // ----- SortLib.C ----- 
+   namespace {  void swap( double *d1, double *d2 ) { /* ... */ } } 
+  函数 swap()只在文件 SortLib.C 中可见 
+  
+  // swap() 在其他程序中不可见 
+  static void swap( double *d1, double *d2 ) { /* ... */ } 
+  
+  namespace International_Business_Machines  { /* ... */ }
+  namespace IBM = International_Business_Machines; 
+  
+  因为每个类都维持着自己的一个域 所以两 个不同类的成员函数不能相互重载
+   1 确定函数调用考虑的重载函数的集合 确定函数调用中实参表的属性     2 从重载函数集合中选择函数 该函数可以在 给出实参个数和类型 的情况下用调用 中指定的实参进行调用     3 选择与调用最匹配的函数     下面我们将按顺序查看每一
+  找到最佳匹配函数
+  模板类型参数由关键字 class 或 typename 后加一个标识符构成 在函数的模板参数表中 这两个关键字的意义相同 
+  通过在模板定义中的关键字 template 之前加上关键字 export 来声明一个可导出的 函数模板 
+  
+  Unix五种io模型Blocking IO 阻塞IO
+  2，Non Blocking IO  非阻塞IO
+  3，IO 多路复用
+  4，信号驱动IO
+  5，异步IO
+  
+  由于在shared_ptr单独使用的时候会出现循环引用的问题，造成内存泄漏，所以标准库又从boost库当中引入了weak_ptr。
+  
+  DNS区域传输的时候使用TCP协议：
+  域名解析时使用UDP协议：
