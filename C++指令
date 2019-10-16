@@ -99,3 +99,4 @@ for ( int ix = 1; ix < 51; ++ix ) {
   
   throw像return
             
+基类异常可以处理其子类类型的异常
