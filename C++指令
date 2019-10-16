@@ -70,3 +70,32 @@ void foo( parm_list, ... ); void foo( ... );
   
   DNS区域传输的时候使用TCP协议：
   域名解析时使用UDP协议：
+
+数据发送时，由上层向下层封装。
+四层，协议层传输的是数据报文，主要是协议格式；
+三层，网络层传输的是数据包，包含数据报文，并且增加传输使用的IP地址等三层信息；
+二层，数据链路层传输的是数据帧，包含数据包，并且增加相应MAC地址与二层信息。
+数据接收的时候，下层向上层解封装。
+具体区别就是所工作的层不同，可根据ISO七层模型或者TCP/IP四层模型理解。
+
+用模板具体化解决模板的局限性（参数类型为数组或自定义类）
+
+异常处理
+for ( int ix = 1; ix < 51; ++ix ) {  
+    try { // pushOnFull 异常的 try 块   
+        if ( ix % 3 == 0 )    
+        stack.push( ix );  }  
+        catch ( pushOnFull ) { ... }  
+        if ( ix % 4 == 0 )   
+            stack.display(); 
+        try { // popOnEmpty 异常的 try 块   
+        if ( ix % 10 == 0 ) {    
+            int dummy;    
+            stack.pop( dummy );    
+            stack.display();  
+            }  
+           }  
+            catch ( popOnEmpty ) { ... } }
+  
+  throw像return
+            
