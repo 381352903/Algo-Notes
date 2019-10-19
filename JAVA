@@ -1,0 +1,22 @@
+[abc]4表示a4 b4 c4
+[^456]除了456以外任何字符
+[a-r]a至r任何
+ [a-z[A-Z]]并运算，a-z或A-Z ==[a-zA-Z]
+[a-o&&[def]] def
+[a-d&&[^bc]] ad
+? 0 or 1
+* 0 to 999999
++ 1 to 999999
+{n}  n times
+{n,} at least n
+{n,m}  n to m times
+A*匹配任意个A
+正则表达式中\\用两个
+\\d数字\\D非数字
+\\s空白字符
+\\S非空白字符
+\\w可用作标识符的字符
+\\W不可用作标识符的字符
+\\p{Lower}
+\\p{Alpha}
+\\p{Alnum}
