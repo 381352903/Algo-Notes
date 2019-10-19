@@ -20,3 +20,5 @@ A*匹配任意个A
 \\p{Lower}
 \\p{Alpha}
 \\p{Alnum}
+finalize()//垃圾回收
+System.gc()//强制垃圾回收
