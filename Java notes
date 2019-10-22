@@ -22,3 +22,17 @@ A*匹配任意个A
 \\p{Alnum}
 finalize()//垃圾回收
 System.gc()//强制垃圾回收
+
+
+取得类名
+getClass().getname();
+判断某实例是不是某类
+myobject instanceof ExampleClass//boolean 返回值
+
+接口用interface定义,接口中定义的方法必须是public或abstract
+public interface drawTest{
+    public void draw();
+    }
+一个类实现一个接口用implements
+public class Parallel extends Quadrangle implements drawTest{
+}
