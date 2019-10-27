@@ -40,7 +40,7 @@ public class Parallel extends Quadrangle implements drawTest{
 
 数组转List
 String[] array=new String[3];
-List<String> list=Arrays.asList(array);  
+List<String> list=Arrays.asList(array);  //不能是ArrayList
 反过来
 List<String> list=new ArrayList<String>();  
 String[] array = (String[])list.toArray(new String[size]);  
