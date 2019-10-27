@@ -36,3 +36,24 @@ public interface drawTest{
 一个类实现一个接口用implements
 public class Parallel extends Quadrangle implements drawTest{
 }
+
+
+数组转List
+String[] array=new String[3];
+List<String> list=Arrays.asList(array);  
+反过来
+List<String> list=new ArrayList<String>();  
+String[] array = (String[])list.toArray(new String[size]);  
+
+Integer[] arr=new Integer[list.size()];
+list.toArray(arr);
+
+数组截取某一位置到一位置
+String [] results =new String[]{"1","2","3","1","2","3""1","2","3"};
+results = Arrays.copyOfRange(results, 0, 5); 
+
+//对数组的[2,6)位进行排序
+Arrays.sort(ints2,2,6);
+
+对ArrayList排序
+Collections.sort(arrayList);
