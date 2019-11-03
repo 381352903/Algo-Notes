@@ -57,3 +57,7 @@ Arrays.sort(ints2,2,6);
 
 对ArrayList排序
 Collections.sort(arrayList);
+
+字符串转Long
+long num=Long.parseLong(s.substring(idx,i+1));
+
