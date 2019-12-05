@@ -66,3 +66,4 @@ Collections.sort(arrayList);
 字符串转Long
 long num=Long.parseLong(s.substring(idx,i+1));
 
+PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[2] - b[2]);
