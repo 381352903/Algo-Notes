@@ -100,3 +100,114 @@ for ( int ix = 1; ix < 51; ++ix ) {
   throw像return
             
 基类异常可以处理其子类类型的异常
+
+runtime error: reference binding to null pointer of type 'struct value_type' (stl_vector.h)
+
+指针越界，一个空二维数组matrix={{}}
+vector<vector<int >> sum=(matrix.size(),vector<int>(matrix[0].size(),0));//error there's no matrix[0] at all
+solution:
+int row=matrix.size();
+int col=row>0?matrix[0].size():0;
+vector<vector<int >> sum=(row,vector<int>(col,0));
+
+heap buffer overflow
+指针越界
+
+heap buffer overflow
+递归函数没有出口
+
+runtime error: member access within null pointer of type 'struct ListNode'
+使用了空指针的->next
+
+单例
+
+class CSingleton {
+private:
+	CSingleton(){}
+	static CSingleton* m_pinstance;
+public:
+	static CSingleton* getinstance() {
+		if (m_pinstance == NULL)
+			m_pinstance = new CSingleton();
+		return m_pinstance;
+	}
+};
+CSingleton* CSingleton::m_pinstance = NULL;
+
+进程
+std::mutex mutex_;
+std::condition_variable condVar;
+
+void doTheWork() {
+	std::cout << "Processing shared data." << std::endl;//3
+}
+
+void waitingForWork() {//t1
+	std::cout << "Worker: Waiting for work." << std::endl; //1
+
+	std::unique_lock<std::mutex> lck(mutex_);
+	condVar.wait(lck);
+	doTheWork();
+	std::cout << "Work done." << std::endl;//4
+}
+
+void setDataReady() {//t2
+	std::cout << "Sender: Data is ready." << std::endl;//2
+	condVar.notify_one();
+}
+
+std::thread t1(waitingForWork);
+std::thread t2(setDataReady);
+
+	t1.join();
+	t2.join();
+
+
+所有对象放在堆中，方法和方法中的形参和局部变量放在栈中
+
+减少复杂度方法：
+。考虑dp算法
+。F(k) = 0 * Bk[0] + 1 * Bk[1] + ... + (n-1) * Bk[n-1]
+F(k-1) = 0 * Bk-1[0] + 1 * Bk-1[1] + ... + (n-1) * Bk-1[n-1]
+       = 0 * Bk[1] + 1 * Bk[2] + ... + (n-2) * Bk[n-1] + (n-1) * Bk[0]
+Then,
+
+F(k) - F(k-1) = Bk[1] + Bk[2] + ... + Bk[n-1] + (1-n)Bk[0]
+              = (Bk[0] + ... + Bk[n-1]) - nBk[0]
+              = sum - nBk[0]
+Thus,
+
+F(k) = F(k-1) + sum - nBk[0]
+考虑利用之前的结果，类似于递归公式
+。
+
+问有多少种路径可以用dp优化dfsQ63
+
+
+
+
+之前有多少个连续的小于X（当前值），求多少个单调值的，用栈，单调栈
+
+Boyer–Moore majority vote algorithm
+摩尔投票法
+    public int majorityElement(int[] nums) {
+
+        int major=nums[0], count = 1;
+        for(int i=1; i<nums.length;i++){
+            if(count==0){
+                count++;
+                major=nums[i];
+            }else if(major==nums[i]){
+                count++;
+            }else count--;
+
+        }
+        return major;
+    }
+
+一个数组中众数出现频率大于0.5可以用roll一个随机数来确定该众数，定一个上限20次来限制出错概率小于1E-6
+
+构造函数可以跟个:再跟上构造function(int[] arr):a(arr){}
+
+超强万能引用
+const auto& vec=iter->second;
